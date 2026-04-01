@@ -1,0 +1,352 @@
+{
+  "name": "4 Viral News to AI Avatar Videos (ElevenLabs + Blotato)",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "hours",
+              "hoursInterval": 24,
+              "triggerAtHour": 10
+            }
+          ]
+        }
+      },
+      "id": "schedule-trigger",
+      "name": "Schedule Trigger",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [0, 0]
+    },
+    {
+      "parameters": {
+        "url": "https://hn.algolia.com/api/v1/search?query=AI+LLM+technology&tags=story&hitsPerPage=10&numericFilters=created_at_i>={{ Math.floor((Date.now() - 86400000) / 1000) }}",
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "json"
+            }
+          }
+        }
+      },
+      "id": "fetch-news",
+      "name": "Fetch HackerNews Top Stories",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [220, 0]
+    },
+    {
+      "parameters": {
+        "agent": "conversationalAgent",
+        "promptType": "define",
+        "text": "You are a viral content scriptwriter. Below are the top 10 HackerNews stories from the last 24 hours:\n\n{{ JSON.stringify($json.hits) }}\n\n**Your task:**\n1. Pick the ONE story most likely to go viral on social media (controversial, surprising, or widely impactful)\n2. Write a 30-second video script (approximately 80-100 words)\n3. The script should be conversational, engaging, start with a hook, and end with a call to action\n4. Write ONLY the script text — no stage directions, no timestamps, no labels\n5. The tone should be energetic and informative, like a tech news anchor\n\nReturn ONLY the script text, nothing else.",
+        "options": {}
+      },
+      "id": "ai-agent",
+      "name": "AI Script Generator",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.7,
+      "position": [440, 0]
+    },
+    {
+      "parameters": {
+        "model": "gpt-4o-mini",
+        "options": {}
+      },
+      "id": "openai-model",
+      "name": "OpenAI Chat Model",
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1,
+      "position": [440, 200]
+    },
+    {
+      "parameters": {
+        "url": "https://api.elevenlabs.io/v1/text-to-speech/YOUR_VOICE_ID",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "xi-api-key",
+              "value": "sk_7853d02e841c8a539ca7df569c4260fb80d8e14c6440b406"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ text: $json.output, model_id: 'eleven_multilingual_v2', voice_settings: { stability: 0.5, similarity_boost: 0.75, style: 0.5, use_speaker_boost: true } }) }}",
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "file",
+              "outputPropertyName": "audio"
+            }
+          }
+        }
+      },
+      "id": "elevenlabs-tts",
+      "name": "ElevenLabs Text-to-Speech",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [660, 0],
+      "notes": "IMPORTANT: Replace YOUR_VOICE_ID in the URL with your cloned voice ID from ElevenLabs"
+    },
+    {
+      "parameters": {
+        "url": "https://api.elevenlabs.io/v1/text-to-speech/YOUR_VOICE_ID/with-timestamps",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "xi-api-key",
+              "value": "sk_7853d02e841c8a539ca7df569c4260fb80d8e14c6440b406"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ text: $node['AI Script Generator'].json.output, model_id: 'eleven_multilingual_v2', voice_settings: { stability: 0.5, similarity_boost: 0.75 } }) }}",
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "json"
+            }
+          }
+        }
+      },
+      "id": "elevenlabs-captions",
+      "name": "ElevenLabs Get Captions",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [660, 250],
+      "notes": "Gets word-level timestamps for captions. Replace YOUR_VOICE_ID."
+    },
+    {
+      "parameters": {
+        "jsCode": "// Combine audio from ElevenLabs TTS node with script text\n// This node prepares the data for video generation\nconst script = $node['AI Script Generator'].json.output;\nconst audioData = $node['ElevenLabs Text-to-Speech'].json.audio;\n\n// Generate a simple caption/subtitle from the script\nconst words = script.split(' ');\nconst wordsPerSecond = 2.5; // average speaking rate\nconst totalDuration = words.length / wordsPerSecond;\n\nreturn [{\n  json: {\n    script: script,\n    audio_available: true,\n    estimated_duration_seconds: Math.ceil(totalDuration),\n    caption_text: script,\n    publish_title: script.substring(0, 80) + '...',\n    publish_description: '#AI #Tech #News #Viral #FraudReportUnit'\n  }\n}];"
+      },
+      "id": "prepare-publish",
+      "name": "Prepare Publish Data",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [880, 0]
+    },
+    {
+      "parameters": {
+        "url": "https://api.blotato.com/v1/posts",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "blotato-api-key",
+              "value": "blt_qmAMnWrqk5VIEoCl2aZyogCwfkDjSvDDbQXNCkpgcU0="
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ platform: 'tiktok', accountId: '35761', text: $json.publish_description, title: $json.publish_title }) }}",
+        "options": {}
+      },
+      "id": "blotato-tiktok",
+      "name": "Blotato Publish TikTok",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [1100, -150],
+      "notes": "TikTok Account ID: 35761"
+    },
+    {
+      "parameters": {
+        "url": "https://api.blotato.com/v1/posts",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "blotato-api-key",
+              "value": "blt_qmAMnWrqk5VIEoCl2aZyogCwfkDjSvDDbQXNCkpgcU0="
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ platform: 'youtube', accountId: '31739', text: $json.publish_description, title: $json.publish_title }) }}",
+        "options": {}
+      },
+      "id": "blotato-youtube",
+      "name": "Blotato Publish YouTube",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [1100, 0],
+      "notes": "YouTube Account ID: 31739"
+    },
+    {
+      "parameters": {
+        "url": "https://api.blotato.com/v1/posts",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "blotato-api-key",
+              "value": "blt_qmAMnWrqk5VIEoCl2aZyogCwfkDjSvDDbQXNCkpgcU0="
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ platform: 'pinterest', accountId: '5126', text: $json.publish_description, title: $json.publish_title }) }}",
+        "options": {}
+      },
+      "id": "blotato-pinterest",
+      "name": "Blotato Publish Pinterest",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [1100, 150],
+      "notes": "Pinterest Account ID: 5126"
+    },
+    {
+      "parameters": {
+        "url": "https://api.telegram.org/bot{{ $env.TELEGRAM_BOT_TOKEN }}/sendMessage",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ chat_id: '896491515', text: '✅ Viral News Workflow Report\\n\\n📰 Script: ' + $node['AI Script Generator'].json.output.substring(0, 200) + '...\\n\\n🎙 ElevenLabs TTS: Generated\\n📱 TikTok (35761): ' + ($node['Blotato Publish TikTok'].json.success ? 'Published' : 'Error') + '\\n▶️ YouTube (31739): ' + ($node['Blotato Publish YouTube'].json.success ? 'Published' : 'Error') + '\\n📌 Pinterest (5126): ' + ($node['Blotato Publish Pinterest'].json.success ? 'Published' : 'Error'), parse_mode: 'HTML' }) }}",
+        "options": {}
+      },
+      "id": "telegram-report",
+      "name": "Telegram Report",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [1320, 0],
+      "notes": "Sends status report to Telegram chat 896491515"
+    }
+  ],
+  "connections": {
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Fetch HackerNews Top Stories",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fetch HackerNews Top Stories": {
+      "main": [
+        [
+          {
+            "node": "AI Script Generator",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Script Generator",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Script Generator": {
+      "main": [
+        [
+          {
+            "node": "ElevenLabs Text-to-Speech",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "ElevenLabs Get Captions",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "ElevenLabs Text-to-Speech": {
+      "main": [
+        [
+          {
+            "node": "Prepare Publish Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prepare Publish Data": {
+      "main": [
+        [
+          {
+            "node": "Blotato Publish TikTok",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Blotato Publish YouTube",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Blotato Publish Pinterest",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Blotato Publish TikTok": {
+      "main": [
+        [
+          {
+            "node": "Telegram Report",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "saveManualExecutions": true,
+    "callerPolicy": "workflowsFromSameOwner"
+  },
+  "tags": [
+    {
+      "name": "Blotato"
+    },
+    {
+      "name": "ElevenLabs"
+    },
+    {
+      "name": "Viral News"
+    }
+  ]
+}
