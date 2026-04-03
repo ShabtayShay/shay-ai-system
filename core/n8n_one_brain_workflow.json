@@ -1,0 +1,191 @@
+{
+  "name": "SHAY ONE BRAIN — Telegram Command Center",
+  "nodes": [
+    {
+      "parameters": {
+        "updates": ["message"],
+        "additionalFields": {}
+      },
+      "id": "telegram-trigger",
+      "name": "Telegram Trigger",
+      "type": "n8n-nodes-base.telegramTrigger",
+      "typeVersion": 1.1,
+      "position": [250, 300]
+    },
+    {
+      "parameters": {
+        "rules": {
+          "rules": [
+            {
+              "conditions": {
+                "options": { "caseSensitive": false },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.message.text }}",
+                    "rightValue": "/status",
+                    "operator": { "type": "string", "operation": "startsWith" }
+                  }
+                ]
+              },
+              "renameOutput": true,
+              "outputLabel": "status"
+            },
+            {
+              "conditions": {
+                "options": { "caseSensitive": false },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.message.text }}",
+                    "rightValue": "/content",
+                    "operator": { "type": "string", "operation": "startsWith" }
+                  }
+                ]
+              },
+              "renameOutput": true,
+              "outputLabel": "content"
+            },
+            {
+              "conditions": {
+                "options": { "caseSensitive": false },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.message.text }}",
+                    "rightValue": "/brief",
+                    "operator": { "type": "string", "operation": "startsWith" }
+                  }
+                ]
+              },
+              "renameOutput": true,
+              "outputLabel": "brief"
+            },
+            {
+              "conditions": {
+                "options": { "caseSensitive": false },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.message.text }}",
+                    "rightValue": "/help",
+                    "operator": { "type": "string", "operation": "startsWith" }
+                  }
+                ]
+              },
+              "renameOutput": true,
+              "outputLabel": "help"
+            }
+          ],
+          "fallbackOutput": {
+            "renameOutput": true,
+            "outputLabel": "ai_chat"
+          }
+        }
+      },
+      "id": "router",
+      "name": "Command Router",
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3,
+      "position": [500, 300]
+    },
+    {
+      "parameters": {
+        "jsCode": "return [\n  {\n    json: {\n      system_prompt: \"YOU ARE: SHAY ONE BRAIN\\n\\nGOAL: Maximize automation, income, and scalability. Minimize manual actions.\\n\\nCORE RULES:\\n- Always prioritize automation over manual work\\n- Always give ready-to-use outputs\\n- Avoid explanations unless necessary\\n- Think in systems, pipelines, and monetization\\n\\nRESPONSE FORMAT (STRICT):\\n1) MODE\\n2) DO NOW (1-5 steps)\\n3) CODE / TEMPLATES\\n4) 1 question (only if critical)\\n\\nUSER: Shay, Israel. Languages: RU, HE, EN.\\nControl: Telegram. Goal: automated income $15k-$100k/month.\\nProjects: PROPAGANDR.AI, Content Agent, Shopify TeemDrop, Pinterest automation.\",\n      memory: {\n        name: \"Shay\",\n        mode: \"ONE BRAIN\",\n        control: \"telegram\",\n        goal: \"automation_income\",\n        target: \"10000_ILS_to_100k_USD\"\n      },\n      user_message: $input.first().json.message.text,\n      chat_id: $input.first().json.message.chat.id\n    }\n  }\n];"
+      },
+      "id": "memory-loader",
+      "name": "Memory Loader",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [750, 500]
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Telegram Trigger').item.json.message.chat.id }}",
+        "text": "=🧠 *SHAY ONE BRAIN — STATUS*\n\n✅ n8n: Online\n✅ Telegram Bot: Active\n✅ Workflow: Running\n\n📊 *Активные проекты:*\n• PROPAGANDR.AI — in development\n• Content Agent — active build\n• Shopify TeemDrop — active\n• Pinterest Pipeline — active\n\n🎯 Цель: 10,000 ILS/мес → $30k+/мес\n\n_Команды: /status /content /brief /help_",
+        "additionalFields": {
+          "parse_mode": "Markdown"
+        }
+      },
+      "id": "status-reply",
+      "name": "Status Reply",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [750, 100]
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Telegram Trigger').item.json.message.chat.id }}",
+        "text": "=📋 *SHAY ONE BRAIN — HELP*\n\n🤖 Доступные команды:\n\n/status — статус всех систем\n/content — сгенерировать контент\n/brief — утренний брифинг\n/help — список команд\n\n💬 Любое другое сообщение → AI ответ\n\n🧠 _Powered by ONE BRAIN system_",
+        "additionalFields": {
+          "parse_mode": "Markdown"
+        }
+      },
+      "id": "help-reply",
+      "name": "Help Reply",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [750, 700]
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Telegram Trigger').item.json.message.chat.id }}",
+        "text": "=☀️ *УТРЕННИЙ БРИФИНГ*\n\n📅 Дата: {{ $now.format('dd.MM.yyyy') }}\n\n📊 *Приоритеты на сегодня:*\n1. Проверить заказы Shopify\n2. Опубликовать 10 пинов Pinterest\n3. Создать 2 видео-скрипта\n4. Проверить VPS статус\n\n🎯 *Фокус:* контент + продажи\n\n_Отправь /content для генерации_",
+        "additionalFields": {
+          "parse_mode": "Markdown"
+        }
+      },
+      "id": "brief-reply",
+      "name": "Brief Reply",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [750, 300]
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Telegram Trigger').item.json.message.chat.id }}",
+        "text": "=✅ *Контент-задача создана*\n\nТип: авто-генерация\nЯзыки: RU, HE, EN\nПлатформы: Pinterest, TikTok, Telegram\n\n⏳ Генерация запущена...\n\n_Результат придёт в этот чат_",
+        "additionalFields": {
+          "parse_mode": "Markdown"
+        }
+      },
+      "id": "content-reply",
+      "name": "Content Reply",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [950, 100]
+    }
+  ],
+  "connections": {
+    "Telegram Trigger": {
+      "main": [
+        [
+          { "node": "Command Router", "type": "main", "index": 0 }
+        ]
+      ]
+    },
+    "Command Router": {
+      "main": [
+        [
+          { "node": "Status Reply", "type": "main", "index": 0 }
+        ],
+        [
+          { "node": "Content Reply", "type": "main", "index": 0 }
+        ],
+        [
+          { "node": "Brief Reply", "type": "main", "index": 0 }
+        ],
+        [
+          { "node": "Help Reply", "type": "main", "index": 0 }
+        ],
+        [
+          { "node": "Memory Loader", "type": "main", "index": 0 }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "tags": [
+    { "name": "ONE BRAIN" },
+    { "name": "telegram" },
+    { "name": "automation" }
+  ]
+}

@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PROPAGANDR.AI — Brand Presentation</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #0A0A0A;
+    --accent: #FF3C00;
+    --secondary: #00D4FF;
+    --text: #F5F0E8;
+    --dim: rgba(245,240,232,0.15);
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Montserrat', sans-serif;
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .deck {
+    width: 100vw;
+    height: 100vh;
+    position: relative;
+  }
+
+  .slide {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 60px 80px;
+    opacity: 0;
+    transform: translateX(60px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+    pointer-events: none;
+  }
+
+  .slide.active {
+    opacity: 1;
+    transform: translateX(0);
+    pointer-events: all;
+  }
+
+  .slide.exit-left {
+    opacity: 0;
+    transform: translateX(-60px);
+  }
+
+  /* Slide-specific backgrounds */
+  .slide-1 { background: radial-gradient(ellipse at 60% 40%, #1a0800 0%, var(--bg) 70%); }
+  .slide-2 { background: radial-gradient(ellipse at 30% 60%, #001a1a 0%, var(--bg) 70%); }
+  .slide-3 { background: radial-gradient(ellipse at 70% 30%, #0d0014 0%, var(--bg) 70%); }
+  .slide-4 { background: radial-gradient(ellipse at 40% 70%, #001200 0%, var(--bg) 70%); }
+  .slide-5 { background: radial-gradient(ellipse at 50% 50%, #1a0a00 0%, var(--bg) 70%); }
+
+  /* Decorative line */
+  .slide::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 6px; height: 100%;
+    background: var(--accent);
+  }
+
+  /* Slide number */
+  .slide-num {
+    position: absolute;
+    bottom: 32px; right: 48px;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 14px;
+    letter-spacing: 4px;
+    color: var(--dim);
+    opacity: 0.6;
+  }
+
+  /* Logo tag */
+  .logo-tag {
+    position: absolute;
+    top: 32px; right: 48px;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 16px;
+    letter-spacing: 6px;
+    color: var(--accent);
+    opacity: 0.7;
+  }
+
+  /* ── SLIDE 1 — HOOK ── */
+  .s1-eyebrow {
+    font-size: 13px;
+    letter-spacing: 8px;
+    text-transform: uppercase;
+    color: var(--secondary);
+    margin-bottom: 24px;
+  }
+
+  .s1-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(64px, 9vw, 120px);
+    line-height: 0.95;
+    text-align: center;
+    color: var(--text);
+  }
+
+  .s1-title span.accent { color: var(--accent); }
+  .s1-title span.blue   { color: var(--secondary); }
+
+  .s1-sub {
+    margin-top: 32px;
+    font-size: 15px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: rgba(245,240,232,0.5);
+  }
+
+  .s1-line {
+    width: 120px; height: 2px;
+    background: var(--accent);
+    margin: 28px auto 0;
+  }
+
+  /* ── SLIDE 2 — PROBLEM / SOLUTION ── */
+  .s2-label {
+    font-size: 12px;
+    letter-spacing: 8px;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 20px;
+  }
+
+  .s2-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 48px;
+    width: 100%;
+    max-width: 900px;
+  }
+
+  .s2-col h2 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 42px;
+    letter-spacing: 2px;
+    margin-bottom: 16px;
+  }
+
+  .s2-col.problem h2 { color: var(--accent); }
+  .s2-col.solution h2 { color: var(--secondary); }
+
+  .s2-col p {
+    font-size: 17px;
+    line-height: 1.7;
+    color: rgba(245,240,232,0.75);
+  }
+
+  .divider-v {
+    width: 1px;
+    background: var(--dim);
+    height: 200px;
+    align-self: center;
+  }
+
+  /* ── SLIDE 3 — SYSTEM ── */
+  .s3-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(36px, 5vw, 56px);
+    letter-spacing: 3px;
+    color: var(--text);
+    margin-bottom: 48px;
+    text-align: center;
+  }
+
+  .flow {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    flex-wrap: wrap;
+    justify-content: center;
+    max-width: 960px;
+  }
+
+  .flow-step {
+    background: rgba(255,60,0,0.08);
+    border: 1px solid rgba(255,60,0,0.3);
+    border-radius: 4px;
+    padding: 18px 24px;
+    text-align: center;
+    min-width: 140px;
+  }
+
+  .flow-step .icon {
+    font-size: 28px;
+    margin-bottom: 8px;
+  }
+
+  .flow-step .label {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 20px;
+    letter-spacing: 2px;
+    color: var(--accent);
+  }
+
+  .flow-step .sub {
+    font-size: 11px;
+    color: rgba(245,240,232,0.45);
+    margin-top: 4px;
+    letter-spacing: 1px;
+  }
+
+  .flow-arrow {
+    font-size: 22px;
+    color: var(--secondary);
+    margin: 0 8px;
+    opacity: 0.7;
+  }
+
+  /* ── SLIDE 4 — STACK ── */
+  .s4-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(36px, 5vw, 52px);
+    letter-spacing: 3px;
+    color: var(--text);
+    margin-bottom: 40px;
+    text-align: center;
+  }
+
+  .stack-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 16px;
+    max-width: 900px;
+    width: 100%;
+  }
+
+  .stack-item {
+    background: rgba(0,212,255,0.05);
+    border: 1px solid rgba(0,212,255,0.2);
+    border-radius: 6px;
+    padding: 20px 12px;
+    text-align: center;
+    transition: border-color 0.3s;
+  }
+
+  .stack-item:hover { border-color: var(--secondary); }
+
+  .stack-item .s-icon { font-size: 32px; margin-bottom: 10px; }
+  .stack-item .s-name {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 18px;
+    letter-spacing: 2px;
+    color: var(--secondary);
+  }
+
+  .stack-item .s-role {
+    font-size: 10px;
+    color: rgba(245,240,232,0.4);
+    margin-top: 4px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+
+  .s4-note {
+    margin-top: 32px;
+    font-size: 13px;
+    letter-spacing: 2px;
+    color: rgba(245,240,232,0.35);
+    text-transform: uppercase;
+  }
+
+  /* ── SLIDE 5 — CTA ── */
+  .s5-pre {
+    font-size: 12px;
+    letter-spacing: 10px;
+    text-transform: uppercase;
+    color: var(--secondary);
+    margin-bottom: 20px;
+  }
+
+  .s5-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(48px, 8vw, 100px);
+    line-height: 1;
+    text-align: center;
+    color: var(--text);
+  }
+
+  .s5-title .big-num {
+    color: var(--accent);
+    font-size: 1.4em;
+    display: block;
+    line-height: 1;
+  }
+
+  .s5-title .currency {
+    color: var(--secondary);
+  }
+
+  .s5-sub {
+    margin-top: 28px;
+    font-size: 16px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: rgba(245,240,232,0.55);
+    text-align: center;
+  }
+
+  .s5-badge {
+    margin-top: 40px;
+    padding: 14px 48px;
+    border: 2px solid var(--accent);
+    border-radius: 2px;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 22px;
+    letter-spacing: 6px;
+    color: var(--accent);
+    text-transform: uppercase;
+  }
+
+  /* ── NAVIGATION ── */
+  .nav {
+    position: fixed;
+    bottom: 36px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    z-index: 100;
+  }
+
+  .nav-btn {
+    background: rgba(255,60,0,0.1);
+    border: 1px solid rgba(255,60,0,0.4);
+    color: var(--text);
+    width: 48px; height: 48px;
+    border-radius: 2px;
+    font-size: 20px;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: background 0.2s, border-color 0.2s;
+  }
+
+  .nav-btn:hover { background: rgba(255,60,0,0.25); border-color: var(--accent); }
+  .nav-btn:disabled { opacity: 0.25; cursor: default; }
+
+  .dots {
+    display: flex;
+    gap: 8px;
+  }
+
+  .dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--dim);
+    cursor: pointer;
+    transition: background 0.2s, transform 0.2s;
+  }
+
+  .dot.active {
+    background: var(--accent);
+    transform: scale(1.4);
+  }
+
+  /* Progress bar */
+  .progress {
+    position: fixed;
+    top: 0; left: 0;
+    height: 3px;
+    background: var(--accent);
+    transition: width 0.5s ease;
+    z-index: 200;
+  }
+</style>
+</head>
+<body>
+
+<div class="progress" id="progress"></div>
+
+<div class="deck" id="deck">
+
+  <!-- SLIDE 1: HOOK -->
+  <div class="slide slide-1 active" data-index="0">
+    <div class="logo-tag">PROPAGANDR.AI</div>
+    <p class="s1-eyebrow">AI-POWERED CONTENT EMPIRE</p>
+    <h1 class="s1-title">
+      <span class="accent">AUTOMATE.</span><br>
+      PUBLISH.<br>
+      <span class="blue">PROFIT.</span>
+    </h1>
+    <p class="s1-sub">The future of content is automated</p>
+    <div class="s1-line"></div>
+    <div class="slide-num">01 / 05</div>
+  </div>
+
+  <!-- SLIDE 2: PROBLEM / SOLUTION -->
+  <div class="slide slide-2" data-index="1">
+    <div class="logo-tag">PROPAGANDR.AI</div>
+    <p class="s2-label">Проблема → Решение</p>
+    <div class="s2-grid">
+      <div class="s2-col problem">
+        <h2>ПРОБЛЕМА</h2>
+        <p>Контент требует времени, денег и людей. Каждый пост — часы работы. Каждый видос — дни монтажа. Ты теряешь деньги, пока думаешь.</p>
+      </div>
+      <div class="divider-v"></div>
+      <div class="s2-col solution">
+        <h2>РЕШЕНИЕ</h2>
+        <p>ИИ делает всё за тебя. Генерирует, публикует, оптимизирует. 24/7. Без усталости. Без жалоб. Ты только считаешь прибыль.</p>
+      </div>
+    </div>
+    <div class="slide-num">02 / 05</div>
+  </div>
+
+  <!-- SLIDE 3: SYSTEM -->
+  <div class="slide slide-3" data-index="2">
+    <div class="logo-tag">PROPAGANDR.AI</div>
+    <h2 class="s3-title">СИСТЕМА РАБОТАЕТ ТАК</h2>
+    <div class="flow">
+      <div class="flow-step">
+        <div class="icon">🛒</div>
+        <div class="label">TeemDrop</div>
+        <div class="sub">Продукты</div>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step">
+        <div class="icon">🏪</div>
+        <div class="label">Shopify</div>
+        <div class="sub">Магазин</div>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step">
+        <div class="icon">📱</div>
+        <div class="label">TikTok / Pinterest</div>
+        <div class="sub">Трафик</div>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step">
+        <div class="icon">💳</div>
+        <div class="label">Заказы</div>
+        <div class="sub">Продажи</div>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step">
+        <div class="icon">💰</div>
+        <div class="label">Прибыль</div>
+        <div class="sub">Автопилот</div>
+      </div>
+    </div>
+    <div class="slide-num">03 / 05</div>
+  </div>
+
+  <!-- SLIDE 4: STACK -->
+  <div class="slide slide-4" data-index="3">
+    <div class="logo-tag">PROPAGANDR.AI</div>
+    <h2 class="s4-title">ТЕХНОЛОГИЧЕСКИЙ СТЕК</h2>
+    <div class="stack-grid">
+      <div class="stack-item">
+        <div class="s-icon">🤖</div>
+        <div class="s-name">Claude</div>
+        <div class="s-role">AI Brain</div>
+      </div>
+      <div class="stack-item">
+        <div class="s-icon">🎙️</div>
+        <div class="s-name">ElevenLabs</div>
+        <div class="s-role">Voice AI</div>
+      </div>
+      <div class="stack-item">
+        <div class="s-icon">🌀</div>
+        <div class="s-name">Blotato</div>
+        <div class="s-role">Publishing</div>
+      </div>
+      <div class="stack-item">
+        <div class="s-icon">⚡</div>
+        <div class="s-name">n8n</div>
+        <div class="s-role">Automation</div>
+      </div>
+      <div class="stack-item">
+        <div class="s-icon">📝</div>
+        <div class="s-name">WordPress</div>
+        <div class="s-role">×10 Sites</div>
+      </div>
+    </div>
+    <p class="s4-note">Полный автопилот — от идеи до публикации</p>
+    <div class="slide-num">04 / 05</div>
+  </div>
+
+  <!-- SLIDE 5: CTA -->
+  <div class="slide slide-5" data-index="4">
+    <div class="logo-tag">PROPAGANDR.AI</div>
+    <p class="s5-pre">Цель системы</p>
+    <div class="s5-title">
+      <span class="big-num">10,000 <span class="currency">₪</span></span>
+      В МЕСЯЦ
+    </div>
+    <p class="s5-sub">На полном автопилоте — без ручного труда</p>
+    <div class="s5-badge">PROPAGANDR.AI</div>
+    <div class="slide-num">05 / 05</div>
+  </div>
+
+</div>
+
+<!-- NAVIGATION -->
+<nav class="nav">
+  <button class="nav-btn" id="prevBtn" onclick="changeSlide(-1)" disabled>←</button>
+  <div class="dots" id="dots"></div>
+  <button class="nav-btn" id="nextBtn" onclick="changeSlide(1)">→</button>
+</nav>
+
+<script>
+  const slides = document.querySelectorAll('.slide');
+  const dotsContainer = document.getElementById('dots');
+  const prevBtn = document.getElementById('prevBtn');
+  const nextBtn = document.getElementById('nextBtn');
+  const progress = document.getElementById('progress');
+  let current = 0;
+  const total = slides.length;
+
+  // Build dots
+  slides.forEach((_, i) => {
+    const dot = document.createElement('div');
+    dot.className = 'dot' + (i === 0 ? ' active' : '');
+    dot.onclick = () => goTo(i);
+    dotsContainer.appendChild(dot);
+  });
+
+  function updateProgress() {
+    progress.style.width = ((current + 1) / total * 100) + '%';
+  }
+
+  function goTo(index) {
+    if (index === current) return;
+    const dir = index > current ? 1 : -1;
+    slides[current].classList.remove('active');
+    slides[current].classList.add(dir > 0 ? 'exit-left' : '');
+    setTimeout(() => slides[current < index ? current : current].classList.remove('exit-left'), 500);
+    current = index;
+    slides[current].classList.add('active');
+
+    // Update dots
+    document.querySelectorAll('.dot').forEach((d, i) => {
+      d.classList.toggle('active', i === current);
+    });
+
+    prevBtn.disabled = current === 0;
+    nextBtn.disabled = current === total - 1;
+    updateProgress();
+  }
+
+  function changeSlide(dir) {
+    const next = current + dir;
+    if (next < 0 || next >= total) return;
+    goTo(next);
+  }
+
+  // Keyboard navigation
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight' || e.key === 'ArrowDown') changeSlide(1);
+    if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') changeSlide(-1);
+  });
+
+  updateProgress();
+</script>
+</body>
+</html>

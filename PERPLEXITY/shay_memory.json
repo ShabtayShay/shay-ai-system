@@ -1,0 +1,121 @@
+{
+  "user": {
+    "name": "Shay",
+    "full_name": "Shabtay Shay",
+    "github": "ShabtayShay",
+    "location": "Israel, Ramat Gan",
+    "languages": ["ru", "he", "en"],
+    "interaction_mode": "voice_telegram",
+    "goal": "fully automated AI income system",
+    "hardware": {
+      "pcs": 3,
+      "vps": 2,
+      "tablets": "multiple",
+      "portable_ssd": "SHAY_AI (drive D:)"
+    }
+  },
+  "systems": {
+    "control": "telegram_bot",
+    "bot_username": "@claude_shay_agent_bot",
+    "bot_token": "8782059285:AAEk9xaHqaBzECzYrkegUOf0_fQZX5Lpn-k",
+    "chat_id": "896491515",
+    "automation": "n8n",
+    "infra": ["docker", "vps", "redis", "postgres", "traefik"],
+    "agents": ["claude", "gemini", "chatgpt", "opencode", "manus", "eigent", "comet", "antigravity", "abacusai", "perplexity"]
+  },
+  "vps": {
+    "vps1": {
+      "ip": "76.13.11.68",
+      "role": "n8n brain, docker, bots, API",
+      "stack": ["n8n", "docker", "postgresql", "redis", "traefik"],
+      "content_factory": "/root/content-factory/"
+    },
+    "vps2": {
+      "ip": "72.60.81.215",
+      "role": "WordPress, affiliate sites",
+      "sites": 10
+    }
+  },
+  "supabase": {
+    "project_id": "qfueclxvdjzuyfprdobu",
+    "tables": ["content_posts", "income_tracker", "github_trends", "skills_library"]
+  },
+  "preferences": {
+    "style": "short_direct",
+    "format": ["mode", "steps", "code"],
+    "priority": ["automation", "scaling", "low_effort"],
+    "outputs": "ready_to_use",
+    "primary_agent": "claude_cowork",
+    "working_dir_pc": "C:\\Users\\Shay\\Desktop\\AI_BRAIN\\",
+    "working_dir_cowork": "C:\\Users\\Shay\\Desktop\\cowork_project\\",
+    "secrets_location": "/root/.env"
+  },
+  "monetization": {
+    "current_target": "10000 ILS/month",
+    "scale_target": "30k-100k USD/month",
+    "models": [
+      "content_automation",
+      "dropshipping_teemdrop",
+      "affiliate_wordpress",
+      "template_selling",
+      "subscription"
+    ],
+    "template_price": "$49-299",
+    "subscription_price": "$19-49/month"
+  },
+  "projects": {
+    "propagandr_ai": {
+      "type": "political_satire_video",
+      "stack": ["claude", "flux1", "kling_ai", "sync_labs", "elevenlabs", "ffmpeg", "n8n"],
+      "status": "in_development",
+      "pipeline": "script → images → video → lip-sync → publish"
+    },
+    "content_agent": {
+      "type": "auto_content_publishing",
+      "languages": ["ru", "he", "en"],
+      "platforms": ["telegram", "wordpress", "pinterest", "tiktok", "reels"],
+      "sources": ["facebook_posts", "youtube", "news"],
+      "status": "active_build",
+      "resume_phrase": "продолжаем контент-агента"
+    },
+    "shopify_teemdrop": {
+      "type": "dropshipping",
+      "supplier": "teemdrop",
+      "niches": ["home_decor", "fitness", "pets"],
+      "traffic": ["pinterest", "tiktok", "reels", "shorts"],
+      "status": "active"
+    },
+    "portable_agent": {
+      "file": "agent.py",
+      "commands": ["/brief", "/content", "/products", "/signal", "/template", "/parse"],
+      "deploy": "vps1",
+      "status": "ready_to_deploy"
+    },
+    "github_backup": {
+      "repo": "ShabtayShay/shay-ai-system",
+      "cron": "nightly",
+      "saves_to": "supabase",
+      "status": "configured"
+    }
+  },
+  "content": {
+    "niches": ["political_satire", "atheism", "science", "evolution", "philosophy", "humor", "dropshipping", "trading"],
+    "languages": ["ru", "he", "en"],
+    "platforms": ["telegram", "tiktok", "reels", "shorts", "pinterest", "wordpress"]
+  },
+  "ai_brain_paths": {
+    "CLAUDE": "C:\\Users\\Shay\\Desktop\\AI_BRAIN\\CLAUDE\\",
+    "CHATGPT": "C:\\Users\\Shay\\Desktop\\AI_BRAIN\\CHATGPT\\",
+    "OPENCODE": "C:\\Users\\Shay\\Desktop\\AI_BRAIN\\OPENCODE\\",
+    "MANUS": "C:\\Users\\Shay\\Desktop\\AI_BRAIN\\MANUS\\",
+    "ABACUSAI": "C:\\Users\\Shay\\Desktop\\AI_BRAIN\\ABACUSAI\\",
+    "PERPLEXITY": "C:\\Users\\Shay\\Desktop\\AI_BRAIN\\PERPLEXITY\\",
+    "COMET": "C:\\Users\\Shay\\Desktop\\AI_BRAIN\\COMET\\",
+    "EIGENT": "C:\\Users\\Shay\\Desktop\\AI_BRAIN\\EIGENT\\",
+    "ANTIGRAVITY": "C:\\Users\\Shay\\Desktop\\AI_BRAIN\\ANTIGRAVITY\\",
+    "N8N": "C:\\Users\\Shay\\Desktop\\AI_BRAIN\\N8N\\",
+    "PROJECTS": "C:\\Users\\Shay\\Desktop\\AI_BRAIN\\PROJECTS\\",
+    "KEYS": "C:\\Users\\Shay\\Desktop\\AI_BRAIN\\KEYS\\",
+    "CORE": "C:\\Users\\Shay\\Desktop\\AI_BRAIN\\core\\"
+  }
+}
