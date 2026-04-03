@@ -1,0 +1,1286 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="refresh" content="60">
+  <title>SHAY AI EMPIRE — КОМАНДНЫЙ ЦЕНТР</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0A0A0A;
+      --card: #111111;
+      --card-hover: #161616;
+      --red: #FF3C00;
+      --blue: #00D4FF;
+      --text: #F5F0E8;
+      --muted: #888880;
+      --border: #222222;
+      --green: #00FF88;
+      --yellow: #FFD700;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Montserrat', sans-serif;
+      font-size: 14px;
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    /* ── HEADER ── */
+    header {
+      background: linear-gradient(135deg, #0A0A0A 0%, #110500 50%, #000A11 100%);
+      border-bottom: 2px solid var(--red);
+      padding: 24px 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .header-left h1 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 2.8rem;
+      letter-spacing: 4px;
+      background: linear-gradient(90deg, var(--red) 0%, var(--text) 50%, var(--blue) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      line-height: 1;
+    }
+
+    .header-left p {
+      font-size: 0.75rem;
+      color: var(--blue);
+      letter-spacing: 6px;
+      text-transform: uppercase;
+      margin-top: 4px;
+      font-weight: 500;
+    }
+
+    .header-right {
+      text-align: right;
+    }
+
+    .header-right .timestamp {
+      font-size: 0.8rem;
+      color: var(--muted);
+      font-family: 'Bebas Neue', sans-serif;
+      letter-spacing: 2px;
+    }
+
+    .live-dot {
+      display: inline-block;
+      width: 8px; height: 8px;
+      background: var(--green);
+      border-radius: 50%;
+      animation: pulse 1.5s infinite;
+      margin-right: 6px;
+      vertical-align: middle;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(0.8); }
+    }
+
+    /* ── MAIN LAYOUT ── */
+    main {
+      padding: 32px 40px;
+      max-width: 1600px;
+      margin: 0 auto;
+    }
+
+    .section-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.4rem;
+      letter-spacing: 4px;
+      color: var(--red);
+      border-left: 4px solid var(--red);
+      padding-left: 14px;
+      margin-bottom: 18px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .section-title .num {
+      background: var(--red);
+      color: #000;
+      font-size: 0.7rem;
+      padding: 2px 8px;
+      border-radius: 2px;
+      font-weight: 700;
+    }
+
+    section {
+      margin-bottom: 36px;
+    }
+
+    /* ── CARDS ── */
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 20px;
+      transition: all 0.2s ease;
+    }
+
+    .card:hover {
+      background: var(--card-hover);
+      border-color: var(--red);
+      box-shadow: 0 0 20px rgba(255, 60, 0, 0.15), 0 0 40px rgba(255, 60, 0, 0.05);
+      transform: translateY(-2px);
+    }
+
+    /* ── SECTION 1: STATUS GRID ── */
+    .status-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 16px;
+    }
+
+    .status-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 18px 20px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      transition: all 0.2s ease;
+      cursor: default;
+    }
+
+    .status-card:hover {
+      border-color: var(--blue);
+      box-shadow: 0 0 20px rgba(0, 212, 255, 0.12);
+      transform: translateY(-2px);
+    }
+
+    .status-icon {
+      font-size: 1.6rem;
+      flex-shrink: 0;
+    }
+
+    .status-info .name {
+      font-weight: 700;
+      font-size: 0.9rem;
+      color: var(--text);
+      letter-spacing: 1px;
+    }
+
+    .status-info .detail {
+      font-size: 0.72rem;
+      color: var(--muted);
+      margin-top: 3px;
+    }
+
+    .status-info a {
+      color: var(--blue);
+      text-decoration: none;
+      font-size: 0.72rem;
+    }
+
+    .status-info a:hover { text-decoration: underline; }
+
+    .badge {
+      margin-left: auto;
+      padding: 3px 10px;
+      border-radius: 20px;
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      flex-shrink: 0;
+    }
+
+    .badge.online { background: rgba(0, 255, 136, 0.15); color: var(--green); border: 1px solid var(--green); }
+    .badge.unknown { background: rgba(255, 215, 0, 0.15); color: var(--yellow); border: 1px solid var(--yellow); }
+    .badge.offline { background: rgba(255, 60, 0, 0.15); color: var(--red); border: 1px solid var(--red); }
+
+    /* ── SECTION 2: FILE TREE ── */
+    .file-tree-wrapper {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+      gap: 16px;
+    }
+
+    .tree-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 18px 20px;
+      transition: all 0.2s ease;
+    }
+
+    .tree-card:hover {
+      border-color: var(--red);
+      box-shadow: 0 0 20px rgba(255, 60, 0, 0.1);
+    }
+
+    .tree-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      cursor: pointer;
+      user-select: none;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 12px;
+    }
+
+    .tree-header:hover { color: var(--blue); }
+
+    .tree-folder-name {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.1rem;
+      letter-spacing: 2px;
+      color: var(--blue);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .tree-stats {
+      font-size: 0.7rem;
+      color: var(--muted);
+      text-align: right;
+    }
+
+    .tree-chevron {
+      color: var(--muted);
+      transition: transform 0.2s;
+      font-size: 0.8rem;
+    }
+
+    .tree-chevron.open { transform: rotate(90deg); }
+
+    .tree-body { display: none; }
+    .tree-body.open { display: block; }
+
+    .tree-item {
+      padding: 5px 0 5px 16px;
+      border-left: 1px solid #1a1a1a;
+      margin-left: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 0.8rem;
+    }
+
+    .tree-item-name {
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .tree-item-count {
+      font-size: 0.68rem;
+      color: var(--muted);
+      background: #1a1a1a;
+      padding: 1px 7px;
+      border-radius: 10px;
+    }
+
+    .tree-sub {
+      padding-left: 20px;
+    }
+
+    /* ── SECTION 3: INCOME ── */
+    .income-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    @media(max-width: 768px) {
+      .income-grid { grid-template-columns: 1fr; }
+    }
+
+    .income-main {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 28px;
+      transition: all 0.2s;
+    }
+
+    .income-main:hover {
+      border-color: var(--red);
+      box-shadow: 0 0 30px rgba(255, 60, 0, 0.15);
+    }
+
+    .income-label {
+      font-size: 0.7rem;
+      color: var(--muted);
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    .income-value {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 3.5rem;
+      line-height: 1;
+      color: var(--red);
+      letter-spacing: 2px;
+    }
+
+    .income-target {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.4rem;
+      color: var(--muted);
+      margin-top: 4px;
+    }
+
+    .progress-wrapper {
+      margin-top: 20px;
+    }
+
+    .progress-label {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.72rem;
+      color: var(--muted);
+      margin-bottom: 8px;
+    }
+
+    .progress-bar {
+      height: 8px;
+      background: #1a1a1a;
+      border-radius: 4px;
+      overflow: hidden;
+      border: 1px solid #222;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--red), var(--blue));
+      border-radius: 4px;
+      width: 0%;
+      transition: width 1s ease;
+      position: relative;
+    }
+
+    .progress-fill::after {
+      content: '';
+      position: absolute;
+      right: 0;
+      top: 0;
+      height: 100%;
+      width: 4px;
+      background: white;
+      border-radius: 2px;
+      box-shadow: 0 0 6px var(--blue);
+    }
+
+    .platforms-list {
+      margin-top: 16px;
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .platform-tag {
+      padding: 4px 12px;
+      border-radius: 4px;
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    .tag-tiktok { background: rgba(0, 212, 255, 0.1); color: var(--blue); border: 1px solid rgba(0, 212, 255, 0.3); }
+    .tag-pinterest { background: rgba(255, 60, 0, 0.1); color: var(--red); border: 1px solid rgba(255, 60, 0, 0.3); }
+    .tag-instagram { background: rgba(200, 100, 255, 0.1); color: #c864ff; border: 1px solid rgba(200, 100, 255, 0.3); }
+    .tag-youtube { background: rgba(255, 60, 0, 0.1); color: #ff6040; border: 1px solid rgba(255, 60, 0, 0.3); }
+
+    .income-side {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .income-stat {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 18px 20px;
+      transition: all 0.2s;
+    }
+
+    .income-stat:hover {
+      border-color: var(--blue);
+      box-shadow: 0 0 20px rgba(0, 212, 255, 0.1);
+    }
+
+    .stat-label { font-size: 0.7rem; color: var(--muted); letter-spacing: 2px; text-transform: uppercase; }
+    .stat-value { font-family: 'Bebas Neue', sans-serif; font-size: 1.6rem; letter-spacing: 1px; color: var(--text); margin-top: 4px; }
+
+    /* ── SECTION 4: QUICK LINKS ── */
+    .links-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 14px;
+    }
+
+    .link-btn {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 6px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 18px 20px;
+      text-decoration: none;
+      color: var(--text);
+      transition: all 0.2s ease;
+      cursor: pointer;
+    }
+
+    .link-btn:hover {
+      background: var(--card-hover);
+      border-color: var(--blue);
+      box-shadow: 0 0 20px rgba(0, 212, 255, 0.15);
+      transform: translateY(-3px);
+      color: var(--blue);
+    }
+
+    .link-icon { font-size: 1.5rem; }
+
+    .link-name {
+      font-weight: 700;
+      font-size: 0.85rem;
+      letter-spacing: 1px;
+    }
+
+    .link-url {
+      font-size: 0.65rem;
+      color: var(--muted);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 100%;
+    }
+
+    /* ── SECTION 5: BACKUP ── */
+    .backup-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 16px;
+    }
+
+    .backup-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 20px;
+      transition: all 0.2s;
+    }
+
+    .backup-card:hover {
+      border-color: var(--blue);
+      box-shadow: 0 0 20px rgba(0, 212, 255, 0.1);
+    }
+
+    .backup-card .b-label {
+      font-size: 0.68rem;
+      color: var(--muted);
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    .backup-card .b-value {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.3rem;
+      letter-spacing: 2px;
+      color: var(--text);
+    }
+
+    .backup-card .b-sub {
+      font-size: 0.72rem;
+      color: var(--muted);
+      margin-top: 4px;
+    }
+
+    /* ── SECTION 6: TASKS ── */
+    .tasks-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+      gap: 12px;
+    }
+
+    .task-item {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 16px 20px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      user-select: none;
+    }
+
+    .task-item:hover {
+      border-color: var(--red);
+      box-shadow: 0 0 16px rgba(255, 60, 0, 0.1);
+    }
+
+    .task-item.done {
+      opacity: 0.5;
+      border-color: var(--green);
+    }
+
+    .task-item.done .task-label {
+      text-decoration: line-through;
+      color: var(--muted);
+    }
+
+    .task-checkbox {
+      width: 22px;
+      height: 22px;
+      border: 2px solid var(--red);
+      border-radius: 4px;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.75rem;
+      color: transparent;
+      transition: all 0.2s;
+    }
+
+    .task-item.done .task-checkbox {
+      background: var(--green);
+      border-color: var(--green);
+      color: #000;
+    }
+
+    .task-content {
+      flex: 1;
+    }
+
+    .task-label {
+      font-weight: 600;
+      font-size: 0.85rem;
+      color: var(--text);
+    }
+
+    .task-cmd {
+      font-size: 0.68rem;
+      color: var(--blue);
+      margin-top: 3px;
+      font-family: 'Courier New', monospace;
+    }
+
+    .task-priority {
+      font-size: 0.6rem;
+      padding: 2px 8px;
+      border-radius: 10px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    .priority-high { background: rgba(255, 60, 0, 0.15); color: var(--red); border: 1px solid var(--red); }
+    .priority-med { background: rgba(255, 215, 0, 0.15); color: var(--yellow); border: 1px solid var(--yellow); }
+    .priority-low { background: rgba(0, 212, 255, 0.15); color: var(--blue); border: 1px solid var(--blue); }
+
+    /* ── DIVIDER ── */
+    .divider {
+      height: 1px;
+      background: linear-gradient(90deg, var(--red) 0%, transparent 100%);
+      margin: 4px 0 28px 0;
+      opacity: 0.3;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 20px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #080808;
+      margin-top: 20px;
+    }
+
+    footer .brand {
+      font-family: 'Bebas Neue', sans-serif;
+      letter-spacing: 3px;
+      font-size: 1rem;
+      color: var(--red);
+    }
+
+    footer .tagline {
+      font-size: 0.7rem;
+      color: var(--muted);
+      letter-spacing: 2px;
+    }
+
+    footer .refresh-info {
+      font-size: 0.65rem;
+      color: #333;
+    }
+
+    /* ── SCROLLBAR ── */
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: #111; }
+    ::-webkit-scrollbar-thumb { background: #333; border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: var(--red); }
+
+    /* ── SCAN STATS BAR ── */
+    .scan-bar {
+      background: linear-gradient(90deg, #0D0200, #000D11);
+      border: 1px solid #1a1a1a;
+      border-radius: 8px;
+      padding: 14px 24px;
+      display: flex;
+      gap: 40px;
+      margin-bottom: 32px;
+      flex-wrap: wrap;
+    }
+
+    .scan-stat {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .scan-stat .s-num {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.8rem;
+      letter-spacing: 2px;
+      color: var(--blue);
+      line-height: 1;
+    }
+
+    .scan-stat .s-label {
+      font-size: 0.65rem;
+      color: var(--muted);
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
+    .scan-time {
+      margin-left: auto;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.7rem;
+      color: var(--muted);
+    }
+
+    @media(max-width: 768px) {
+      header { padding: 16px 20px; flex-direction: column; gap: 12px; }
+      main { padding: 20px; }
+      .header-left h1 { font-size: 2rem; }
+      footer { flex-direction: column; gap: 8px; text-align: center; padding: 16px; }
+      .scan-bar { gap: 20px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ═══ HEADER ═══ -->
+<header>
+  <div class="header-left">
+    <h1>SHAY AI EMPIRE — КОМАНДНЫЙ ЦЕНТР</h1>
+    <p>PROPAGANDR.AI &nbsp;|&nbsp; Automate. Publish. Profit.</p>
+  </div>
+  <div class="header-right">
+    <div class="timestamp" id="ts">
+      <span class="live-dot"></span>LIVE
+    </div>
+    <div style="font-size:0.7rem; color:var(--muted); margin-top:4px;">Аудит: 04.04.2026 | Автообновление: 60с</div>
+  </div>
+</header>
+
+<!-- ═══ MAIN ═══ -->
+<main>
+
+  <!-- SCAN STATS BAR -->
+  <div class="scan-bar">
+    <div class="scan-stat">
+      <span class="s-num">184</span>
+      <span class="s-label">Файлов найдено</span>
+    </div>
+    <div class="scan-stat">
+      <span class="s-num">6</span>
+      <span class="s-label">Основных папок</span>
+    </div>
+    <div class="scan-stat">
+      <span class="s-num">71</span>
+      <span class="s-label">Подпапок AI_BRAIN</span>
+    </div>
+    <div class="scan-stat">
+      <span class="s-num">13</span>
+      <span class="s-label">Агентов AI</span>
+    </div>
+    <div class="scan-stat">
+      <span class="s-num">26</span>
+      <span class="s-label">Элементов Desktop</span>
+    </div>
+    <div class="scan-time">
+      🔍 Полный аудит завершён &nbsp;|&nbsp; Источник: C:\Users\Shay\Desktop
+    </div>
+  </div>
+
+  <!-- ══ SECTION 1: СТАТУС СИСТЕМ ══ -->
+  <section>
+    <div class="section-title"><span class="num">01</span> СТАТУС СИСТЕМ</div>
+    <div class="divider"></div>
+    <div class="status-grid">
+
+      <div class="status-card">
+        <div class="status-icon">🖥️</div>
+        <div class="status-info">
+          <div class="name">VPS 76.13.11.68</div>
+          <div class="detail">SSH недоступен из браузера</div>
+          <div class="detail">root@76.13.11.68 port 22</div>
+        </div>
+        <span class="badge unknown">Неизвестно 🟡</span>
+      </div>
+
+      <div class="status-card">
+        <div class="status-icon">🤖</div>
+        <div class="status-info">
+          <div class="name">Telegram Bot</div>
+          <div class="detail">Настроен — конфиг найден</div>
+          <div class="detail">cowork_project/results/telegram_bot_setup.md</div>
+        </div>
+        <span class="badge unknown">Неизвестно 🟡</span>
+      </div>
+
+      <div class="status-card">
+        <div class="status-icon">⚙️</div>
+        <div class="status-info">
+          <div class="name">n8n Dashboard</div>
+          <div class="detail"><a href="http://76.13.11.68:5678" target="_blank">http://76.13.11.68:5678 ↗</a></div>
+          <div class="detail">Рабочие процессы: content, pinterest, shopify, telegram</div>
+        </div>
+        <span class="badge unknown">Неизвестно 🟡</span>
+      </div>
+
+      <div class="status-card">
+        <div class="status-icon">🐙</div>
+        <div class="status-info">
+          <div class="name">GitHub Backup</div>
+          <div class="detail">ShabtayShay/shay-ai-system</div>
+          <div class="detail">Последний push: 03.04.2026 22:12</div>
+        </div>
+        <span class="badge online">✅ Активен</span>
+      </div>
+
+      <div class="status-card">
+        <div class="status-icon">🧠</div>
+        <div class="status-info">
+          <div class="name">LightRAG Memory</div>
+          <div class="detail">Не установлен на VPS</div>
+          <div class="detail">Требуется установка: /root/lightrag</div>
+        </div>
+        <span class="badge unknown">Неизвестно 🟡</span>
+      </div>
+
+      <div class="status-card">
+        <div class="status-icon">📢</div>
+        <div class="status-info">
+          <div class="name">Blotato Publisher</div>
+          <div class="detail">Аккаунты настроены</div>
+          <div class="detail">TikTok + Pinterest подключены</div>
+        </div>
+        <span class="badge online">✅ Подключён</span>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ══ SECTION 2: МОИ ФАЙЛЫ ══ -->
+  <section>
+    <div class="section-title"><span class="num">02</span> МОИ ФАЙЛЫ — СТРУКТУРА ПРОЕКТА</div>
+    <div class="divider"></div>
+    <div class="file-tree-wrapper">
+
+      <!-- AI_BRAIN -->
+      <div class="tree-card">
+        <div class="tree-header" onclick="toggleTree('brain')">
+          <div class="tree-folder-name">📁 AI_BRAIN</div>
+          <div style="display:flex; align-items:center; gap:12px;">
+            <div class="tree-stats">63 файла &nbsp;|&nbsp; 71 папка</div>
+            <span class="tree-chevron open" id="chevron-brain">▶</span>
+          </div>
+        </div>
+        <div class="tree-body open" id="tree-brain">
+          <div class="tree-item"><span class="tree-item-name">🤖 ABACUSAI</span><span class="tree-item-count">4 файла</span></div>
+          <div class="tree-sub">
+            <div class="tree-item"><span class="tree-item-name">📂 models / outputs / skills / voice</span></div>
+          </div>
+          <div class="tree-item"><span class="tree-item-name">🚀 ANTIGRAVITY</span><span class="tree-item-count">4 файла</span></div>
+          <div class="tree-item"><span class="tree-item-name">💬 CHATGPT</span><span class="tree-item-count">5 файлов</span></div>
+          <div class="tree-sub">
+            <div class="tree-item"><span class="tree-item-name">📂 gpts / outputs / prompts / skills</span></div>
+          </div>
+          <div class="tree-item"><span class="tree-item-name">🔷 CLAUDE</span><span class="tree-item-count">9 файлов</span></div>
+          <div class="tree-sub">
+            <div class="tree-item"><span class="tree-item-name">📂 memory / outputs / prompts / skills</span></div>
+            <div class="tree-item"><span class="tree-item-name">📂 skills → automation / coding / content / monetization / presentation</span></div>
+          </div>
+          <div class="tree-item"><span class="tree-item-name">☄️ COMET</span><span class="tree-item-count">4 файла</span></div>
+          <div class="tree-item"><span class="tree-item-name">🕵️ EIGENT</span><span class="tree-item-count">4 файла</span></div>
+          <div class="tree-item"><span class="tree-item-name">🔑 KEYS</span><span class="tree-item-count">3 файла</span></div>
+          <div class="tree-sub">
+            <div class="tree-item"><span class="tree-item-name">📂 api / emails / passwords</span></div>
+          </div>
+          <div class="tree-item"><span class="tree-item-name">🌐 MANUS</span><span class="tree-item-count">4 файла</span></div>
+          <div class="tree-item"><span class="tree-item-name">⚡ N8N</span><span class="tree-item-count">5 файлов</span></div>
+          <div class="tree-sub">
+            <div class="tree-item"><span class="tree-item-name">📂 workflows → content / pinterest / shopify / telegram</span></div>
+          </div>
+          <div class="tree-item"><span class="tree-item-name">💻 OPENCODE</span><span class="tree-item-count">4 файла</span></div>
+          <div class="tree-item"><span class="tree-item-name">🔍 PERPLEXITY</span><span class="tree-item-count">4 файла</span></div>
+          <div class="tree-item"><span class="tree-item-name">📦 PROJECTS</span><span class="tree-item-count">9 файлов</span></div>
+          <div class="tree-sub">
+            <div class="tree-item"><span class="tree-item-name">📂 CONTENT_AGENT (en/he/ru)</span></div>
+            <div class="tree-item"><span class="tree-item-name">📂 PROPAGANDR (characters/output/prompts/scripts)</span></div>
+            <div class="tree-item"><span class="tree-item-name">📂 SHOPIFY_TEEMDROP (pins/products)</span></div>
+          </div>
+          <div class="tree-item"><span class="tree-item-name">⚙️ core</span><span class="tree-item-count">4 файла</span></div>
+        </div>
+      </div>
+
+      <!-- AI_ECOSYSTEM -->
+      <div class="tree-card">
+        <div class="tree-header" onclick="toggleTree('eco')">
+          <div class="tree-folder-name">📁 AI_ECOSYSTEM</div>
+          <div style="display:flex; align-items:center; gap:12px;">
+            <div class="tree-stats">23 файла &nbsp;|&nbsp; 12 папок</div>
+            <span class="tree-chevron open" id="chevron-eco">▶</span>
+          </div>
+        </div>
+        <div class="tree-body open" id="tree-eco">
+          <div class="tree-item"><span class="tree-item-name">🤖 agents</span><span class="tree-item-count">2 файла</span></div>
+          <div class="tree-item"><span class="tree-item-name">🔌 connectors</span><span class="tree-item-count">8 файлов</span></div>
+          <div class="tree-sub">
+            <div class="tree-item"><span class="tree-item-name">📂 __pycache__</span></div>
+          </div>
+          <div class="tree-item"><span class="tree-item-name">📊 dashboard</span><span class="tree-item-count">2 файла</span></div>
+          <div class="tree-item"><span class="tree-item-name">📄 docs</span><span class="tree-item-count">1 файл</span></div>
+          <div class="tree-item"><span class="tree-item-name">📋 logs</span><span class="tree-item-count">4 файла</span></div>
+          <div class="tree-sub">
+            <div class="tree-item"><span class="tree-item-name">📂 actions / conversations / errors</span></div>
+          </div>
+          <div class="tree-item"><span class="tree-item-name">🎯 orchestrator</span><span class="tree-item-count">3 файла</span></div>
+          <div class="tree-item"><span class="tree-item-name">✅ tasks</span><span class="tree-item-count">2 файла</span></div>
+          <div class="tree-item"><span class="tree-item-name">▶️ start_ecosystem.bat</span><span class="tree-item-count">скрипт запуска</span></div>
+        </div>
+      </div>
+
+      <!-- cowork_project -->
+      <div class="tree-card">
+        <div class="tree-header" onclick="toggleTree('cowork')">
+          <div class="tree-folder-name">📁 cowork_project</div>
+          <div style="display:flex; align-items:center; gap:12px;">
+            <div class="tree-stats">30 файлов &nbsp;|&nbsp; 5 папок</div>
+            <span class="tree-chevron open" id="chevron-cowork">▶</span>
+          </div>
+        </div>
+        <div class="tree-body open" id="tree-cowork">
+          <div class="tree-item"><span class="tree-item-name">📄 CLAUDE.md</span><span class="tree-item-count">гл. конфиг</span></div>
+          <div class="tree-item"><span class="tree-item-name">📄 START-HERE.md</span></div>
+          <div class="tree-item"><span class="tree-item-name">📋 action_log.md</span></div>
+          <div class="tree-item"><span class="tree-item-name">📂 results</span><span class="tree-item-count">27 файлов</span></div>
+          <div class="tree-sub">
+            <div class="tree-item"><span class="tree-item-name">blotato_accounts.json</span></div>
+            <div class="tree-item"><span class="tree-item-name">blotato_debug/errors/final/mcp_setup.md</span></div>
+            <div class="tree-item"><span class="tree-item-name">n8n_content_agent.md</span></div>
+            <div class="tree-item"><span class="tree-item-name">system_complete.md / final_status.md</span></div>
+            <div class="tree-item"><span class="tree-item-name">vps1_status / vps2_security / vps2_status.md</span></div>
+            <div class="tree-item"><span class="tree-item-name">telegram_bot_setup / workflow.md</span></div>
+          </div>
+          <div class="tree-item"><span class="tree-item-name">📂 shay-ai-system</span></div>
+          <div class="tree-sub">
+            <div class="tree-item"><span class="tree-item-name">📂 workflows</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- AI_PROJECT -->
+      <div class="tree-card">
+        <div class="tree-header" onclick="toggleTree('proj')">
+          <div class="tree-folder-name">📁 AI_PROJECT</div>
+          <div style="display:flex; align-items:center; gap:12px;">
+            <div class="tree-stats">68 файлов &nbsp;|&nbsp; 9 папок</div>
+            <span class="tree-chevron open" id="chevron-proj">▶</span>
+          </div>
+        </div>
+        <div class="tree-body open" id="tree-proj">
+          <div class="tree-item"><span class="tree-item-name">📦 telegram-ai-saas</span></div>
+          <div class="tree-sub">
+            <div class="tree-item"><span class="tree-item-name">⚙️ backend</span><span class="tree-item-count">FastAPI</span></div>
+            <div class="tree-sub">
+              <div class="tree-item"><span class="tree-item-name">📂 alembic / app / tests</span></div>
+            </div>
+            <div class="tree-item"><span class="tree-item-name">🖥️ frontend</span><span class="tree-item-count">Next.js</span></div>
+            <div class="tree-sub">
+              <div class="tree-item"><span class="tree-item-name">📂 app / components / lib</span></div>
+            </div>
+            <div class="tree-item"><span class="tree-item-name">🌐 nginx</span></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ══ SECTION 3: ТРЕКЕР ДОХОДА ══ -->
+  <section>
+    <div class="section-title"><span class="num">03</span> ТРЕКЕР ДОХОДА — PROPAGANDR.AI</div>
+    <div class="divider"></div>
+    <div class="income-grid">
+      <div class="income-main">
+        <div class="income-label">Текущий доход / месяц</div>
+        <div class="income-value" id="current-income">0 ₪</div>
+        <div class="income-target">Цель: 10,000 ₪ / месяц</div>
+        <div class="progress-wrapper">
+          <div class="progress-label">
+            <span>Прогресс</span>
+            <span id="pct">0%</span>
+          </div>
+          <div class="progress-bar">
+            <div class="progress-fill" id="prog-fill" style="width:0%"></div>
+          </div>
+        </div>
+        <div style="margin-top:14px; font-size:0.72rem; color:var(--muted);">
+          💳 Gumroad: <span style="color:var(--blue);">nutsintel@gmail.com</span>
+        </div>
+        <div class="platforms-list">
+          <span class="platform-tag tag-tiktok">TikTok</span>
+          <span class="platform-tag tag-pinterest">Pinterest</span>
+          <span class="platform-tag tag-instagram">Instagram</span>
+          <span class="platform-tag tag-youtube">YouTube</span>
+        </div>
+      </div>
+      <div class="income-side">
+        <div class="income-stat">
+          <div class="stat-label">Источник трафика #1</div>
+          <div class="stat-value">TikTok / Reels</div>
+          <div style="font-size:0.72rem; color:var(--muted); margin-top:4px;">Авто-публикация через Blotato</div>
+        </div>
+        <div class="income-stat">
+          <div class="stat-label">Модель монетизации</div>
+          <div class="stat-value">TeemDrop → Shopify</div>
+          <div style="font-size:0.72rem; color:var(--muted); margin-top:4px;">Дропшиппинг + Digital Products</div>
+        </div>
+        <div class="income-stat">
+          <div class="stat-label">Статус воронки</div>
+          <div class="stat-value" style="color:var(--yellow);">⚠ Настройка</div>
+          <div style="font-size:0.72rem; color:var(--muted); margin-top:4px;">Первый Gumroad продукт — в очереди</div>
+        </div>
+        <div class="income-stat">
+          <div class="stat-label">Следующий шаг</div>
+          <div class="stat-value" style="color:var(--red); font-size:1rem;">Создать Gumroad продукт</div>
+          <div style="font-size:0.72rem; color:var(--muted); margin-top:4px;">Запустить n8n Content Agent workflow</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ SECTION 4: БЫСТРЫЕ ССЫЛКИ ══ -->
+  <section>
+    <div class="section-title"><span class="num">04</span> БЫСТРЫЕ ССЫЛКИ</div>
+    <div class="divider"></div>
+    <div class="links-grid">
+
+      <a href="http://76.13.11.68:5678" target="_blank" class="link-btn">
+        <div class="link-icon">⚙️</div>
+        <div class="link-name">n8n Dashboard</div>
+        <div class="link-url">76.13.11.68:5678</div>
+      </a>
+
+      <a href="https://github.com/ShabtayShay/shay-ai-system" target="_blank" class="link-btn">
+        <div class="link-icon">🐙</div>
+        <div class="link-name">GitHub Repo</div>
+        <div class="link-url">ShabtayShay/shay-ai-system</div>
+      </a>
+
+      <a href="https://app.gumroad.com/login" target="_blank" class="link-btn">
+        <div class="link-icon">💰</div>
+        <div class="link-name">Gumroad</div>
+        <div class="link-url">nutsintel@gmail.com</div>
+      </a>
+
+      <a href="https://t.me/" target="_blank" class="link-btn">
+        <div class="link-icon">✈️</div>
+        <div class="link-name">Telegram Bot</div>
+        <div class="link-url">t.me/your_bot</div>
+      </a>
+
+      <a href="https://supabase.com/dashboard" target="_blank" class="link-btn">
+        <div class="link-icon">🗄️</div>
+        <div class="link-name">Supabase</div>
+        <div class="link-url">supabase.com/dashboard</div>
+      </a>
+
+      <a href="https://app.blotato.com" target="_blank" class="link-btn">
+        <div class="link-icon">📢</div>
+        <div class="link-name">Blotato Publisher</div>
+        <div class="link-url">app.blotato.com</div>
+      </a>
+
+      <div class="link-btn" onclick="copySSH()">
+        <div class="link-icon">🖥️</div>
+        <div class="link-name">VPS Terminal</div>
+        <div class="link-url">ssh root@76.13.11.68</div>
+      </div>
+
+      <a href="https://teemdrop.com" target="_blank" class="link-btn">
+        <div class="link-icon">🛍️</div>
+        <div class="link-name">TeemDrop</div>
+        <div class="link-url">teemdrop.com</div>
+      </a>
+
+      <a href="https://shopify.com/admin" target="_blank" class="link-btn">
+        <div class="link-icon">🏪</div>
+        <div class="link-name">Shopify Admin</div>
+        <div class="link-url">shopify.com/admin</div>
+      </a>
+
+    </div>
+  </section>
+
+  <!-- ══ SECTION 5: СТАТУС БЭКАПА ══ -->
+  <section>
+    <div class="section-title"><span class="num">05</span> СТАТУС БЭКАПА</div>
+    <div class="divider"></div>
+    <div class="backup-grid">
+
+      <div class="backup-card">
+        <div class="b-label">Последний push GitHub</div>
+        <div class="b-value">03.04.2026 22:12</div>
+        <div class="b-sub">ShabtayShay/shay-ai-system</div>
+      </div>
+
+      <div class="backup-card">
+        <div class="b-label">Файлов в репозитории</div>
+        <div class="b-value">13 папок</div>
+        <div class="b-sub">184 файла всего в системе</div>
+      </div>
+
+      <div class="backup-card">
+        <div class="b-label">AI_BRAIN Git Status</div>
+        <div class="b-value" style="color:var(--yellow);">⚠ Требует синхронизации</div>
+        <div class="b-sub">.git найден → нужен push</div>
+      </div>
+
+      <div class="backup-card">
+        <div class="b-label">Статус VPS Backup</div>
+        <div class="b-value" style="color:var(--yellow);">🟡 Требует проверки</div>
+        <div class="b-sub">SSH недоступен из браузера</div>
+      </div>
+
+      <div class="backup-card">
+        <div class="b-label">Следующий автобэкап</div>
+        <div class="b-value">05.04.2026 03:00</div>
+        <div class="b-sub">SYNC_GITHUB.bat на Desktop</div>
+      </div>
+
+      <div class="backup-card">
+        <div class="b-label">Desktop Скрипты</div>
+        <div class="b-value">2 BAT файла</div>
+        <div class="b-sub">SYNC_GITHUB.bat &nbsp;|&nbsp; UPDATE_ALL.bat</div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ══ SECTION 6: ЗАДАЧИ НА СЕГОДНЯ ══ -->
+  <section>
+    <div class="section-title"><span class="num">06</span> ЗАДАЧИ НА СЕГОДНЯ — 04.04.2026</div>
+    <div class="divider"></div>
+    <div class="tasks-grid">
+
+      <div class="task-item" id="t1" onclick="toggleTask('t1')">
+        <div class="task-checkbox" id="cb1">✓</div>
+        <div class="task-content">
+          <div class="task-label">Проверить VPS — SSH соединение</div>
+          <div class="task-cmd">ssh root@76.13.11.68</div>
+        </div>
+        <span class="task-priority priority-high">Высокий</span>
+      </div>
+
+      <div class="task-item" id="t2" onclick="toggleTask('t2')">
+        <div class="task-checkbox" id="cb2">✓</div>
+        <div class="task-content">
+          <div class="task-label">Запустить n8n Content Agent workflow</div>
+          <div class="task-cmd">http://76.13.11.68:5678 → workflows → content</div>
+        </div>
+        <span class="task-priority priority-high">Высокий</span>
+      </div>
+
+      <div class="task-item" id="t3" onclick="toggleTask('t3')">
+        <div class="task-checkbox" id="cb3">✓</div>
+        <div class="task-content">
+          <div class="task-label">Установить LightRAG на VPS</div>
+          <div class="task-cmd">pip install lightrag-hku → /root/lightrag</div>
+        </div>
+        <span class="task-priority priority-high">Высокий</span>
+      </div>
+
+      <div class="task-item" id="t4" onclick="toggleTask('t4')">
+        <div class="task-checkbox" id="cb4">✓</div>
+        <div class="task-content">
+          <div class="task-label">Создать первый Gumroad продукт</div>
+          <div class="task-cmd">app.gumroad.com → nutsintel@gmail.com</div>
+        </div>
+        <span class="task-priority priority-high">Высокий</span>
+      </div>
+
+      <div class="task-item" id="t5" onclick="toggleTask('t5')">
+        <div class="task-checkbox" id="cb5">✓</div>
+        <div class="task-content">
+          <div class="task-label">Синхронизировать AI_BRAIN с GitHub</div>
+          <div class="task-cmd">cd AI_BRAIN && git add . && git commit -m "sync" && git push</div>
+        </div>
+        <span class="task-priority priority-med">Средний</span>
+      </div>
+
+      <div class="task-item" id="t6" onclick="toggleTask('t6')">
+        <div class="task-checkbox" id="cb6">✓</div>
+        <div class="task-content">
+          <div class="task-label">Проверить Blotato — TikTok + Pinterest</div>
+          <div class="task-cmd">app.blotato.com → accounts → verify connections</div>
+        </div>
+        <span class="task-priority priority-med">Средний</span>
+      </div>
+
+      <div class="task-item" id="t7" onclick="toggleTask('t7')">
+        <div class="task-checkbox" id="cb7">✓</div>
+        <div class="task-content">
+          <div class="task-label">Настроить general_agent.py на VPS</div>
+          <div class="task-cmd">/root/shay-brigade/general_agent.py → python3 general_agent.py</div>
+        </div>
+        <span class="task-priority priority-med">Средний</span>
+      </div>
+
+      <div class="task-item" id="t8" onclick="toggleTask('t8')">
+        <div class="task-checkbox" id="cb8">✓</div>
+        <div class="task-content">
+          <div class="task-label">Запустить SYNC_GITHUB.bat</div>
+          <div class="task-cmd">Desktop → SYNC_GITHUB.bat (двойной клик)</div>
+        </div>
+        <span class="task-priority priority-low">Низкий</span>
+      </div>
+
+    </div>
+  </section>
+
+</main>
+
+<!-- ═══ FOOTER ═══ -->
+<footer>
+  <div>
+    <div class="brand">PROPAGANDR.AI</div>
+    <div class="tagline">© 2026 — Automate. Publish. Profit.</div>
+  </div>
+  <div style="text-align:center;">
+    <div style="font-size:0.72rem; color:var(--muted);">Аудит: C:\Users\Shay\Desktop</div>
+    <div style="font-size:0.65rem; color:#333; margin-top:3px;">184 файла | 6 папок | AI Empire v1.0</div>
+  </div>
+  <div class="refresh-info">Автообновление каждые 60 секунд<br>Последнее: <span id="last-refresh">—</span></div>
+</footer>
+
+<script>
+  // Live clock
+  function updateTime() {
+    const now = new Date();
+    const ts = now.toLocaleString('ru-RU', {
+      day: '2-digit', month: '2-digit', year: 'numeric',
+      hour: '2-digit', minute: '2-digit', second: '2-digit'
+    });
+    document.getElementById('ts').innerHTML = '<span class="live-dot"></span>' + ts;
+    document.getElementById('last-refresh').textContent = ts;
+  }
+  updateTime();
+  setInterval(updateTime, 1000);
+
+  // Tree toggle
+  function toggleTree(id) {
+    const body = document.getElementById('tree-' + id);
+    const chevron = document.getElementById('chevron-' + id);
+    body.classList.toggle('open');
+    chevron.classList.toggle('open');
+  }
+
+  // Task toggle
+  function toggleTask(id) {
+    const item = document.getElementById(id);
+    const num = id.replace('t', '');
+    const cb = document.getElementById('cb' + num);
+    item.classList.toggle('done');
+    cb.textContent = item.classList.contains('done') ? '✓' : '';
+    saveTasks();
+  }
+
+  // Persist tasks in localStorage
+  function saveTasks() {
+    const states = {};
+    for (let i = 1; i <= 8; i++) {
+      states['t' + i] = document.getElementById('t' + i).classList.contains('done');
+    }
+    try { localStorage.setItem('shay_tasks', JSON.stringify(states)); } catch(e){}
+  }
+
+  function loadTasks() {
+    try {
+      const saved = JSON.parse(localStorage.getItem('shay_tasks') || '{}');
+      for (const [id, done] of Object.entries(saved)) {
+        if (done) {
+          const item = document.getElementById(id);
+          if (item) {
+            item.classList.add('done');
+            const num = id.replace('t', '');
+            const cb = document.getElementById('cb' + num);
+            if (cb) cb.textContent = '✓';
+          }
+        }
+      }
+    } catch(e){}
+  }
+  loadTasks();
+
+  // Progress bar animation on load
+  window.addEventListener('load', () => {
+    setTimeout(() => {
+      const pct = 0;
+      document.getElementById('prog-fill').style.width = pct + '%';
+      document.getElementById('pct').textContent = pct + '%';
+    }, 300);
+  });
+
+  // Copy SSH command
+  function copySSH() {
+    const cmd = 'ssh root@76.13.11.68';
+    try {
+      navigator.clipboard.writeText(cmd).then(() => {
+        alert('Скопировано: ' + cmd);
+      });
+    } catch(e) {
+      prompt('Скопируйте команду:', cmd);
+    }
+  }
+</script>
+
+</body>
+</html>
