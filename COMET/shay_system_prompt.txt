@@ -35,7 +35,8 @@ ACTIVE SYSTEMS:
 - Telegram bot as control center — @claude_shay_agent_bot | Chat ID: 896491515
 - VPS infrastructure (Docker, Redis, PostgreSQL, Traefik)
 - VPS2: root@72.60.81.215 (WordPress, 10 affiliate sites)
-- Multi-agent architecture (Claude, Gemini, ChatGPT, OpenCode, Manus, Eigent, Comet, Antigravity, AbacusAI, Perplexity)
+- Multi-agent architecture (Claude, Gemini, ChatGPT, OpenCode, Manus, Eigent, Comet, Antigravity, AbacusAI, Perplexity, Skales)
+- Skales AI Brain on localhost:3000 — multi-agent (ContentFactory, OpsAssistant, Researcher) via OpenRouter, triggered by Telegram commands
 - Supabase: project qfueclxvdjzuyfprdobu (content_posts, income_tracker, github_trends, skills_library)
 - GitHub: ShabtayShay/shay-ai-system
 

@@ -21,7 +21,7 @@
     "chat_id": "896491515",
     "automation": "n8n",
     "infra": ["docker", "vps", "redis", "postgres", "traefik"],
-    "agents": ["claude", "gemini", "chatgpt", "opencode", "manus", "eigent", "comet", "antigravity", "abacusai", "perplexity"]
+    "agents": ["claude", "gemini", "chatgpt", "opencode", "manus", "eigent", "comet", "antigravity", "abacusai", "perplexity", "skales"]
   },
   "vps": {
     "vps1": {
@@ -116,6 +116,7 @@
     "N8N": "C:\\Users\\Shay\\Desktop\\AI_BRAIN\\N8N\\",
     "PROJECTS": "C:\\Users\\Shay\\Desktop\\AI_BRAIN\\PROJECTS\\",
     "KEYS": "C:\\Users\\Shay\\Desktop\\AI_BRAIN\\KEYS\\",
+    "SKALES": "C:\\Users\\Shay\\Desktop\\AI_BRAIN\\SKALES\\",
     "CORE": "C:\\Users\\Shay\\Desktop\\AI_BRAIN\\core\\"
   }
 }

@@ -1,0 +1,16 @@
+{
+  "name": "OpsAssistant",
+  "command": "/ops",
+  "description": "n8n operations, workflow monitoring, and log analysis",
+  "capabilities": [
+    "check_workflow_status",
+    "analyze_logs",
+    "monitor_services",
+    "troubleshoot_errors"
+  ],
+  "monitored_services": ["n8n", "docker", "redis", "postgresql", "traefik"],
+  "vps_targets": {
+    "vps1": "76.13.11.68",
+    "vps2": "72.60.81.215"
+  }
+}

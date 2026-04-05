@@ -25,6 +25,7 @@
 - EIGENT:      C:\Users\Shay\Desktop\AI_BRAIN\EIGENT\
 - N8N:         C:\Users\Shay\Desktop\AI_BRAIN\N8N\
 - PROJECTS:    C:\Users\Shay\Desktop\AI_BRAIN\PROJECTS\
+- SKALES:      C:\Users\Shay\Desktop\AI_BRAIN\SKALES\
 - KEYS:        C:\Users\Shay\Desktop\AI_BRAIN\KEYS\
 
 ## ЦЕЛЬ

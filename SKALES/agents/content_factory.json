@@ -1,0 +1,17 @@
+{
+  "name": "ContentFactory",
+  "command": "/content",
+  "description": "Content generation and prompts for Telegram publishing",
+  "capabilities": [
+    "generate_posts",
+    "create_prompts",
+    "format_content",
+    "multi_language"
+  ],
+  "languages": ["ru", "he", "en"],
+  "platforms": ["telegram", "wordpress", "pinterest", "tiktok", "reels"],
+  "output_format": {
+    "type": "structured",
+    "fields": ["title", "body", "hashtags", "platform", "language"]
+  }
+}

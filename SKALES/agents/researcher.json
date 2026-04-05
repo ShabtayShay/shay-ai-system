@@ -1,0 +1,15 @@
+{
+  "name": "Researcher",
+  "command": "/research",
+  "description": "Web search and summarization for market research and trend analysis",
+  "capabilities": [
+    "web_search",
+    "summarize_articles",
+    "trend_analysis",
+    "competitor_research"
+  ],
+  "output_format": {
+    "type": "summary",
+    "fields": ["topic", "key_findings", "sources", "recommendations"]
+  }
+}
